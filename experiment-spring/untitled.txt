@@ -1,0 +1,38 @@
+def hamfield(coords):
+    cmat=contact_mat(coords)
+    Hcoords=hamiltonian_fn(coords)
+    xh=np.einsum('ijk,jk->ik',cmat,autograd.elementwise_grad(hamiltonian_fn)(x))
+    xh[2][:]=xh[2][:]-Hcoords
+    return(xh)
+    
+    
+def contact_mat(coords): 
+
+    q, p ,s = np.split(coords,3)
+
+    if q.size>1:
+
+        mat=np.zeros([3,3,q.size])
+        mat[0][0][:]=0.
+        mat[0][1][:]=1.
+        mat[1][0][:]=-1.
+        mat[1][1][:]=0.
+        mat[1][2][:]=-p[:]
+        mat[2][1][:]=p[:]
+    if q.size==1:
+        mat=np.zeros([3,3])
+        mat[0][0]=0.
+        mat[0][1]=1.
+        mat[1][0]=-1.
+        mat[1][1]=0.
+        mat[1][2]=-p
+        mat[2][1]=p
+        
+    return(mat)
+    
+def hamfieldten(F2,coords):
+    cmat=contact_tensor(coords)
+    Hcoords=F2
+    xh=tc.einsum('ijk,jk->ik',contact_tensor,torch.autograd.grad(F2.sum(),x,create_graph=True)[0])
+    xh[2][:]=xh[2][:]-Hcoords
+    return(xh)

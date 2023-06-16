@@ -1,0 +1,445 @@
+# x=np.random.randn([3,5])
+
+# ---------------------------------------------------------------------------
+# TypeError                                 Traceback (most recent call last)
+# <ipython-input-3-a001d69e9f3d> in <module>
+# ----> 1 x=np.random.randn([3,5])
+
+# ~/.local/lib/python3.8/site-packages/autograd/tracer.py in f_wrapped(*args, **kwargs)
+#      46             return new_box(ans, trace, node)
+#      47         else:
+# ---> 48             return f_raw(*args, **kwargs)
+#      49     f_wrapped.fun = f_raw
+#      50     f_wrapped._is_autograd_primitive = True
+
+# mtrand.pyx in numpy.random.mtrand.RandomState.randn()
+
+# mtrand.pyx in numpy.random.mtrand.RandomState.standard_normal()
+
+# _common.pyx in numpy.random._common.cont()
+
+# TypeError: 'list' object cannot be interpreted as an integer
+
+# x=np.random.randn(3,5)
+
+# x
+
+# array([[ 0.35811874, -1.27967061,  1.7473676 ,  0.7479553 ,  0.01862646],
+#        [-3.11183371, -0.14645304,  0.23049023,  1.7942594 , -0.56200956],
+#        [ 2.30148753,  1.83360311, -0.81584277, -0.59455185,  0.92952188]])
+
+# hamiltonian_fn(x)
+
+# array([[10.96250185,  2.57580692,  2.69849788,  3.48152798,  0.78096263]])
+
+# x[0]
+
+# array([ 0.35811874, -1.27967061,  1.7473676 ,  0.7479553 ,  0.01862646])
+
+# dh=autograd.grad(hamiltonian_fn)(x)
+
+# ---------------------------------------------------------------------------
+# TypeError                                 Traceback (most recent call last)
+# <ipython-input-8-4338d9b536ae> in <module>
+# ----> 1 dh=autograd.grad(hamiltonian_fn)(x)
+
+# ~/.local/lib/python3.8/site-packages/autograd/wrap_util.py in nary_f(*args, **kwargs)
+#      18             else:
+#      19                 x = tuple(args[i] for i in argnum)
+# ---> 20             return unary_operator(unary_f, x, *nary_op_args, **nary_op_kwargs)
+#      21         return nary_f
+#      22     return nary_operator
+
+# ~/.local/lib/python3.8/site-packages/autograd/differential_operators.py in grad(fun, x)
+#      25     vjp, ans = _make_vjp(fun, x)
+#      26     if not vspace(ans).size == 1:
+# ---> 27         raise TypeError("Grad only applies to real scalar-output functions. "
+#      28                         "Try jacobian, elementwise_grad or holomorphic_grad.")
+#      29     return vjp(vspace(ans).ones())
+
+# TypeError: Grad only applies to real scalar-output functions. Try jacobian, elementwise_grad or holomorphic_grad.
+
+# dh=autograd.elementwiese_grad(hamiltonian_fn)(x)
+
+# ---------------------------------------------------------------------------
+# AttributeError                            Traceback (most recent call last)
+# <ipython-input-9-111bb9fe7db2> in <module>
+# ----> 1 dh=autograd.elementwiese_grad(hamiltonian_fn)(x)
+
+# AttributeError: module 'autograd' has no attribute 'elementwiese_grad'
+
+# dh=autograd.elementwise_grad(hamiltonian_fn)(x)
+
+# dh
+
+# array([[ 0.71623747, -2.55934122,  3.49473519,  1.4959106 ,  0.03725293],
+#        [-6.22366743, -0.29290608,  0.46098046,  3.58851879, -1.12401911],
+#        [ 0.5       ,  0.5       ,  0.5       ,  0.5       ,  0.5       ]])
+
+# def contact_mat(coords): 
+
+#     q, p ,s = np.split(coords,3)
+
+#     if np.size(q)>1:
+
+#         zero0=np.zeros(size(q))
+
+#         mat = [[  zero0, zero0+1.,  zero0],
+
+#                         [zero0-1.,  zero0,  -p],
+
+#                         [  zero0, p , zero0]]
+
+#     if np.size(q)==1:
+
+#         mat = np.array([[  0., 1.,  0.],
+
+#                         [-1.,  0.,  -p],
+
+#                         [  0., p , 0.]])
+
+    
+
+#     return mat
+
+# contact_mat(x)
+
+# ---------------------------------------------------------------------------
+# NameError                                 Traceback (most recent call last)
+# <ipython-input-13-033f63741e06> in <module>
+# ----> 1 contact_mat(x)
+
+# <ipython-input-12-ac4f0d34195e> in contact_mat(coords)
+#       2     q, p ,s = np.split(coords,3)
+#       3     if np.size(q)>1:
+# ----> 4         zero0=np.zeros(size(q))
+#       5         mat = [[  zero0, zero0+1.,  zero0],
+#       6                         [zero0-1.,  zero0,  -p],
+
+# NameError: name 'size' is not defined
+
+# def contact_mat(coords): 
+
+#     q, p ,s = np.split(coords,3)
+
+#     if size.q()>1:
+
+#         zero0=np.zeros(size(q))
+
+#         mat = [[  zero0, zero0+1.,  zero0],
+
+#                         [zero0-1.,  zero0,  -p],
+
+#                         [  zero0, p , zero0]]
+
+#     if size.q()==1:
+
+#         mat = np.array([[  0., 1.,  0.],
+
+#                         [-1.,  0.,  -p],
+
+#                         [  0., p , 0.]])
+
+    
+
+#     return mat
+
+# contact_mat(x)
+
+# ---------------------------------------------------------------------------
+# NameError                                 Traceback (most recent call last)
+# <ipython-input-15-033f63741e06> in <module>
+# ----> 1 contact_mat(x)
+
+# <ipython-input-14-35165b6fa65a> in contact_mat(coords)
+#       1 def contact_mat(coords):
+#       2     q, p ,s = np.split(coords,3)
+# ----> 3     if size.q()>1:
+#       4         zero0=np.zeros(size(q))
+#       5         mat = [[  zero0, zero0+1.,  zero0],
+
+# NameError: name 'size' is not defined
+
+# shape(x)
+
+# ---------------------------------------------------------------------------
+# NameError                                 Traceback (most recent call last)
+# <ipython-input-16-55ca915756b0> in <module>
+# ----> 1 shape(x)
+
+# NameError: name 'shape' is not defined
+
+# dim(x)
+
+# ---------------------------------------------------------------------------
+# NameError                                 Traceback (most recent call last)
+# <ipython-input-17-8579bf563e15> in <module>
+# ----> 1 dim(x)
+
+# NameError: name 'dim' is not defined
+
+# x.shape
+
+# (3, 5)
+
+# def contact_mat(coords): 
+
+#     q, p ,s = np.split(coords,3)
+
+#     if q.shape>1:
+
+#         zero0=np.zeros(size(q))
+
+#         mat = [[  zero0, zero0+1.,  zero0],
+
+#                         [zero0-1.,  zero0,  -p],
+
+#                         [  zero0, p , zero0]]
+
+#     if q.shape==1:
+
+#         mat = np.array([[  0., 1.,  0.],
+
+#                         [-1.,  0.,  -p],
+
+#                         [  0., p , 0.]])
+
+    
+
+#     return mat
+
+# contact_mat(x)
+
+# ---------------------------------------------------------------------------
+# TypeError                                 Traceback (most recent call last)
+# <ipython-input-20-033f63741e06> in <module>
+# ----> 1 contact_mat(x)
+
+# <ipython-input-19-32595019ac83> in contact_mat(coords)
+#       1 def contact_mat(coords):
+#       2     q, p ,s = np.split(coords,3)
+# ----> 3     if q.shape>1:
+#       4         zero0=np.zeros(size(q))
+#       5         mat = [[  zero0, zero0+1.,  zero0],
+
+# TypeError: '>' not supported between instances of 'tuple' and 'int'
+
+# q, p ,s = np.split(x,3)
+
+# q.shape
+
+# (1, 5)
+
+# q.dim
+
+# ---------------------------------------------------------------------------
+# AttributeError                            Traceback (most recent call last)
+# <ipython-input-23-6a6a6abdec09> in <module>
+# ----> 1 q.dim
+
+# AttributeError: 'numpy.ndarray' object has no attribute 'dim'
+
+# q.size
+
+# 5
+
+# def contact_mat(coords): 
+
+#     q, p ,s = np.split(coords,3)
+
+#     if q.size>1:
+
+#         zero0=np.zeros(size(q))
+
+#         mat = [[  zero0, zero0+1.,  zero0],
+
+#                         [zero0-1.,  zero0,  -p],
+
+#                         [  zero0, p , zero0]]
+
+#     if q.size==1:
+
+#         mat = np.array([[  0., 1.,  0.],
+
+#                         [-1.,  0.,  -p],
+
+#                         [  0., p , 0.]])
+
+    
+
+#     return mat
+
+# contact_mat(x)
+
+# ---------------------------------------------------------------------------
+# NameError                                 Traceback (most recent call last)
+# <ipython-input-26-033f63741e06> in <module>
+# ----> 1 contact_mat(x)
+
+# <ipython-input-25-a1e88060de7f> in contact_mat(coords)
+#       2     q, p ,s = np.split(coords,3)
+#       3     if q.size>1:
+# ----> 4         zero0=np.zeros(size(q))
+#       5         mat = [[  zero0, zero0+1.,  zero0],
+#       6                         [zero0-1.,  zero0,  -p],
+
+# NameError: name 'size' is not defined
+
+# def contact_mat(coords): 
+
+#     q, p ,s = np.split(coords,3)
+
+#     if q.size>1:
+
+#         zero0=np.zeros(q.size)
+
+#         mat = [[  zero0, zero0+1.,  zero0],
+
+#                         [zero0-1.,  zero0,  -p],
+
+#                         [  zero0, p , zero0]]
+
+#     if q.size==1:
+
+#         mat = np.array([[  0., 1.,  0.],
+
+#                         [-1.,  0.,  -p],
+
+#                         [  0., p , 0.]])
+
+    
+
+#     return mat
+
+# contact_mat(x)
+
+# [[array([0., 0., 0., 0., 0.]),
+#   array([1., 1., 1., 1., 1.]),
+#   array([0., 0., 0., 0., 0.])],
+#  [array([-1., -1., -1., -1., -1.]),
+#   array([0., 0., 0., 0., 0.]),
+#   array([[ 3.11183371,  0.14645304, -0.23049023, -1.7942594 ,  0.56200956]])],
+#  [array([0., 0., 0., 0., 0.]),
+#   array([[-3.11183371, -0.14645304,  0.23049023,  1.7942594 , -0.56200956]]),
+#   array([0., 0., 0., 0., 0.])]]
+
+# stack(contact_mat(x))
+
+# ---------------------------------------------------------------------------
+# NameError                                 Traceback (most recent call last)
+# <ipython-input-29-cf56d9ee8f67> in <module>
+# ----> 1 stack(contact_mat(x))
+
+# NameError: name 'stack' is not defined
+
+# np.stack(contact_mat(x))
+
+# /home/federico/.local/lib/python3.8/site-packages/autograd/numpy/numpy_wrapper.py:77: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify 'dtype=object' when creating the ndarray
+#   return _np.array(args, *array_args, **array_kwargs)
+
+# ---------------------------------------------------------------------------
+# ValueError                                Traceback (most recent call last)
+# <ipython-input-30-0c55591d1635> in <module>
+# ----> 1 np.stack(contact_mat(x))
+
+# ~/.local/lib/python3.8/site-packages/autograd/numpy/numpy_wrapper.py in stack(arrays, axis)
+#      92     shapes = set(arr.shape for arr in arrays)
+#      93     if len(shapes) != 1:
+# ---> 94         raise ValueError('all input arrays must have the same shape')
+#      95 
+#      96     result_ndim = arrays[0].ndim + 1
+
+# ValueError: all input arrays must have the same shape
+
+# np.sqeeze(contact_mat(x))
+
+# ---------------------------------------------------------------------------
+# AttributeError                            Traceback (most recent call last)
+# <ipython-input-31-c4f598b43d58> in <module>
+# ----> 1 np.sqeeze(contact_mat(x))
+
+# AttributeError: module 'autograd.numpy' has no attribute 'sqeeze'
+
+# contact_mat(x).shape
+
+# ---------------------------------------------------------------------------
+# AttributeError                            Traceback (most recent call last)
+# <ipython-input-32-f70688432ec8> in <module>
+# ----> 1 contact_mat(x).shape
+
+# AttributeError: 'list' object has no attribute 'shape'
+
+# def contact_mat(coords): 
+
+#     q, p ,s = np.split(coords,3)
+
+#     if q.size>1:
+
+#         zero0=np.zeros(q.size)
+
+#         mat = np.array([[  zero0, zero0+1.,  zero0],
+
+#                         [zero0-1.,  zero0,  -p],
+
+#                         [  zero0, p , zero0]])
+
+#     if q.size==1:
+
+#         mat = np.array([[  0., 1.,  0.],
+
+#                         [-1.,  0.,  -p],
+
+#                         [  0., p , 0.]])
+
+    
+
+#     return mat
+
+# contact_mat(x)
+
+# ---------------------------------------------------------------------------
+# ValueError                                Traceback (most recent call last)
+# <ipython-input-34-033f63741e06> in <module>
+# ----> 1 contact_mat(x)
+
+# <ipython-input-33-62b84b33fb48> in contact_mat(coords)
+#       3     if q.size>1:
+#       4         zero0=np.zeros(q.size)
+# ----> 5         mat = np.array([[  zero0, zero0+1.,  zero0],
+#       6                         [zero0-1.,  zero0,  -p],
+#       7                         [  zero0, p , zero0]])
+
+# ~/.local/lib/python3.8/site-packages/autograd/numpy/numpy_wrapper.py in array(A, *args, **kwargs)
+#      56     t = builtins.type(A)
+#      57     if t in (list, tuple):
+# ---> 58         return array_from_args(args, kwargs, *map(array, A))
+#      59     else:
+#      60         return _array_from_scalar_or_array(args, kwargs, A)
+
+# ~/.local/lib/python3.8/site-packages/autograd/tracer.py in f_wrapped(*args, **kwargs)
+#      46             return new_box(ans, trace, node)
+#      47         else:
+# ---> 48             return f_raw(*args, **kwargs)
+#      49     f_wrapped.fun = f_raw
+#      50     f_wrapped._is_autograd_primitive = True
+
+# ~/.local/lib/python3.8/site-packages/autograd/numpy/numpy_wrapper.py in array_from_args(array_args, array_kwargs, *args)
+#      75 @primitive
+#      76 def array_from_args(array_args, array_kwargs, *args):
+# ---> 77     return _np.array(args, *array_args, **array_kwargs)
+#      78 
+#      79 def select(condlist, choicelist, default=0):
+
+# ValueError: could not broadcast input array from shape (3,5) into shape (3)
+
+# x
+
+# array([[ 0.35811874, -1.27967061,  1.7473676 ,  0.7479553 ,  0.01862646],
+#        [-3.11183371, -0.14645304,  0.23049023,  1.7942594 , -0.56200956],
+#        [ 2.30148753,  1.83360311, -0.81584277, -0.59455185,  0.92952188]])
+
+# q, p ,s = np.split(x,3)
+
+# q.size
+
+# 5
